@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block body %}
+<header><h1>Performance</h1></header>
+
+<div class="cards">
+  <div class="card"><small>Average wait (s)</small><b data-m="avg_wait" data-d="1">0</b></div>
+  <div class="card"><small>95th percentile wait (s)</small><b data-m="p95_wait" data-d="1">0</b></div>
+  <div class="card"><small>Longest wait (s)</small><b data-m="max_wait" data-d="1">0</b></div>
+  <div class="card"><small>HELP wait (s)</small><b data-m="help_wait" data-d="1">0</b></div>
+  <div class="card"><small>Preemptions</small><b data-m="preemptions" data-d="0">0</b></div>
+  <div class="card"><small>Caregiver busy</small><b data-m="util" data-d="2">0</b></div>
+</div>
+
+<div class="grid2" id="charts">
+  <div class="panel"><h3>Waiting in queue</h3><canvas id="c-q" width="520" height="200"></canvas></div>
+  <div class="panel"><h3>Average wait so far (s)</h3><canvas id="c-w" width="520" height="200"></canvas></div>
+  <div class="panel"><h3>HELP + PAIN wait so far (s)</h3><canvas id="c-em" width="520" height="200"></canvas></div>
+  <div class="panel"><h3>Completed per second</h3><canvas id="c-th" width="520" height="200"></canvas></div>
+</div>
+
+<div class="panel"><h3>Average wait per patient <small>current run (s)</small></h3><div id="pp"></div></div>
+
+<div class="panel">
+  <h3>Compare policies <small>every policy is run on identical requests</small></h3>
+  <div class="ctrl">
+    <label>Runs per setting <input type="number" id="e-seeds" value="10" min="1" max="50"></label>
+    <label>Caregivers <select id="e-cg"><option>1</option><option selected>2</option><option>3</option></select></label>
+    <label>Queue size <input type="number" id="e-cap" value="20" min="1" max="100"></label>
+    <button class="pri" id="erun">Run comparison</button>
+    <label>Load <select id="eload"><option value="light">Light</option><option value="moderate">Moderate</option><option value="heavy" selected>Heavy</option><option value="overload">Overload</option></select></label>
+    <a class="btn" href="/export/experiments.csv">Download CSV</a>
+  </div>
+  <span class="hint" id="estat">Results are saved in the database and shown here after a run.</span>
+  <div class="tw" style="margin-top:12px"><table id="etable"><thead><tr><th>Policy</th><th>Avg wait</th><th>HELP wait</th><th>HELP+PAIN wait</th><th>Routine avg</th><th>Routine longest</th><th>Waited &gt; 60 s</th><th>Dropped</th><th>Preemptions</th><th>Fairness</th></tr></thead><tbody></tbody></table></div>
+  <div id="ebars" style="margin-top:8px"></div>
+</div>
+{% endblock %}

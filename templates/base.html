@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GazeCare OS</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body data-page="{{ page }}">
+<aside>
+  <div class="brand"><div class="logo" aria-hidden="true">👁</div><div><b>GazeCare</b><small>Ward request scheduler</small></div></div>
+  <nav>
+    <a href="/" class="{{ 'on' if page=='dashboard' }}">Dashboard</a>
+    <a href="/requests" class="{{ 'on' if page=='requests' }}">Requests</a>
+    <a href="/performance" class="{{ 'on' if page=='performance' }}">Performance</a>
+    <a href="/methodology" class="{{ 'on' if page=='methodology' }}">Methodology</a>
+  </nav>
+  <div class="side-foot">
+    <span id="status" class="pill">paused</span>
+    <small>Simulated time: <b id="clock">0.0</b> s</small>
+  </div>
+</aside>
+<main>{% block body %}{% endblock %}</main>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

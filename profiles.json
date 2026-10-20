@@ -1,0 +1,175 @@
+{
+ "patients": [
+  {
+   "source_file": "ALS01_ET.csv",
+   "n_selections": 14,
+   "typing_seconds": 57.8,
+   "intervals": [
+    6.545,
+    6.699,
+    2.901,
+    3.186,
+    2.081,
+    4.928,
+    2.599,
+    4.42,
+    6.395,
+    3.015,
+    3.747,
+    4.038,
+    2.742
+   ],
+   "deletions": 1,
+   "correction_rate": 0.1071,
+   "gap_prob": 0.0,
+   "gap_durations": [
+    0.0
+   ],
+   "name": "Patient 1"
+  },
+  {
+   "source_file": "ALS02_ET.csv",
+   "n_selections": 12,
+   "typing_seconds": 45.6,
+   "intervals": [
+    3.359,
+    2.77,
+    2.264,
+    6.105,
+    2.187,
+    2.838,
+    5.274,
+    3.017,
+    2.583,
+    4.022,
+    3.421
+   ],
+   "deletions": 0,
+   "correction_rate": 0.0417,
+   "gap_prob": 0.0,
+   "gap_durations": [
+    0.0
+   ],
+   "name": "Patient 2"
+  },
+  {
+   "source_file": "ALS03_ET.csv",
+   "n_selections": 29,
+   "typing_seconds": 125.5,
+   "intervals": [
+    1.861,
+    2.539,
+    2.549,
+    6.149,
+    1.581,
+    7.051,
+    2.425,
+    3.42,
+    2.258,
+    3.373,
+    2.907,
+    7.026,
+    2.656,
+    5.154,
+    3.434,
+    4.486,
+    5.649,
+    3.501,
+    2.858,
+    4.678,
+    6.374,
+    4.084,
+    4.618,
+    8.808,
+    2.852,
+    6.256,
+    5.966,
+    3.038
+   ],
+   "deletions": 7,
+   "correction_rate": 0.2586,
+   "gap_prob": 0.6071,
+   "gap_durations": [
+    0.51,
+    0.572,
+    0.662,
+    0.754,
+    0.815,
+    0.849,
+    1.088,
+    1.109,
+    1.156,
+    1.422,
+    1.568,
+    1.571,
+    1.608,
+    1.78,
+    2.058,
+    2.273,
+    3.273,
+    2.884
+   ],
+   "name": "Patient 3"
+  },
+  {
+   "source_file": "ALS04_ET.csv",
+   "n_selections": 12,
+   "typing_seconds": 48.9,
+   "intervals": [
+    2.057,
+    3.298,
+    2.419,
+    4.529,
+    8.383,
+    5.133,
+    5.534,
+    2.765,
+    2.091,
+    3.029,
+    2.342
+   ],
+   "deletions": 0,
+   "correction_rate": 0.0417,
+   "gap_prob": 0.0,
+   "gap_durations": [
+    0.0
+   ],
+   "name": "Patient 4"
+  },
+  {
+   "source_file": "ALS05_ET.csv",
+   "n_selections": 21,
+   "typing_seconds": 91.1,
+   "intervals": [
+    9.094,
+    6.818,
+    2.978,
+    4.534,
+    2.203,
+    3.438,
+    9.481,
+    2.862,
+    1.505,
+    3.136,
+    2.79,
+    2.363,
+    7.09,
+    4.131,
+    2.77,
+    7.004,
+    2.699,
+    2.658,
+    4.803,
+    2.732
+   ],
+   "deletions": 4,
+   "correction_rate": 0.2143,
+   "gap_prob": 0.0,
+   "gap_durations": [
+    0.0
+   ],
+   "name": "Patient 5"
+  }
+ ],
+ "problems": []
+}

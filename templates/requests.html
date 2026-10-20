@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+<header><h1>Requests</h1>
+  <div class="row"><a class="btn" href="/export/requests.csv">Download requests CSV</a><a class="btn" href="/export/events.csv">Download event log CSV</a></div></header>
+
+<div class="panel">
+  <div class="row" style="margin-bottom:10px"><h3 style="margin:0;flex:1">Current run</h3>
+    <label>Show <select id="flt"><option value="">All</option><option value="queued">Waiting</option><option value="processing">In service</option><option value="completed">Completed</option><option value="dropped">Dropped</option><option value="cancelled">Cancelled</option></select></label></div>
+  <div class="tw"><table id="rtable"><thead><tr><th>#</th><th>Request</th><th>Patient</th><th>Level</th><th>Arrived (s)</th><th>Status</th><th>Wait (s)</th><th>Interrupted</th><th></th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<div class="panel">
+  <h3>Saved runs <small>stored in the SQLite database</small></h3>
+  <div class="tw"><table id="runs"><thead><tr><th>Run</th><th>Started</th><th>Status</th><th>Policy</th><th>Preempt</th><th>Caregivers</th><th>Load</th><th>Requests</th><th>Avg wait (s)</th><th></th></tr></thead><tbody></tbody></table></div>
+</div>
+{% endblock %}

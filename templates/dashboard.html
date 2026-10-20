@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block body %}
+<header><h1>Ward dashboard</h1></header>
+
+<div class="panel">
+  <div class="ctrl">
+    <div class="btns">
+      <button class="pri" data-act="start">▶ Start</button>
+      <button data-act="pause">⏸ Pause</button>
+      <button data-act="reset">↺ Reset</button>
+    </div>
+    <label>Policy
+      <select data-cfg="algo"><option value="fcfs">FCFS</option><option value="priority">Priority</option><option value="priority_aging">Priority + Aging</option></select></label>
+    <label>Preemption
+      <select data-cfg="preempt"><option value="true">On</option><option value="false">Off</option></select></label>
+    <label>Patient load
+      <select data-cfg="load"><option value="light">Light</option><option value="moderate">Moderate</option><option value="heavy">Heavy</option><option value="overload">Overload</option></select></label>
+    <label>Caregivers
+      <select data-cfg="caregivers"><option>1</option><option>2</option><option>3</option></select></label>
+    <label>Queue size <input type="number" data-cfg="capacity" min="1" max="100"></label>
+    <label>Speed
+      <select data-cfg="speed"><option value="1">1x</option><option value="5">5x</option><option value="10">10x</option><option value="25">25x</option><option value="50">50x</option><option value="100">100x</option></select></label>
+  </div>
+  <span class="hint">Changing any setting except speed starts a new run. Preemption applies to the Priority policies only.</span>
+</div>
+
+<div id="alerts"></div>
+
+<div class="cards">
+  <div class="card"><small>Requests</small><b data-m="generated" data-d="0">0</b></div>
+  <div class="card"><small>Completed</small><b data-m="completed" data-d="0">0</b></div>
+  <div class="card"><small>Waiting now</small><b data-m="qlen" data-d="0">0</b></div>
+  <div class="card"><small>Average wait (s)</small><b data-m="avg_wait" data-d="1">0</b></div>
+  <div class="card"><small>HELP + PAIN wait (s)</small><b data-m="emerg_wait" data-d="1">0</b></div>
+  <div class="card"><small>Dropped</small><b data-m="dropped" data-d="0">0</b></div>
+</div>
+
+<div class="panel">
+  <h3>Request flow</h3>
+  <div class="pipe">
+    <div class="stage"><h4>New requests</h4><div class="chips" id="p-in"></div></div>
+    <div class="arr">➜</div>
+    <div class="stage wide"><h4>Queue <span id="qtxt"></span></h4><div class="bar"><i id="qbar"></i></div><div class="chips" id="p-q"></div></div>
+    <div class="arr">➜</div>
+    <div class="stage"><h4>Caregivers</h4><div class="cgs" id="p-cg"></div></div>
+    <div class="arr">➜</div>
+    <div class="stage"><h4>Completed</h4><div class="chips" id="p-done"></div></div>
+    <div class="stage lost"><h4>Dropped / cancelled</h4><div class="chips" id="p-lost"></div></div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="panel">
+    <h3>Send a request <small>to test the scheduler</small></h3>
+    <div class="ctrl">
+      <label>Patient <select id="mpat"></select></label>
+      <label>Request <select id="mcat"></select></label>
+      <button class="pri" id="msub">Send</button>
+    </div>
+    <span class="hint" id="mmsg"></span>
+  </div>
+  <div class="panel"><h3>Event log</h3><div class="log" id="log"></div></div>
+</div>
+{% endblock %}

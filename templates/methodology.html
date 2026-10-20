@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block body %}
+<header><h1>Methodology</h1></header>
+<div class="panel prose">
+  <h3>What the system does</h3>
+  <p>Five patients send care requests from an eye-controlled screen. Requests enter one bounded queue and are served by one to three caregivers. The scheduler decides who is served next.</p>
+
+  <h3>Request categories</h3>
+  <table><thead><tr><th>Request</th><th>Level</th><th>Service time (s)</th></tr></thead><tbody>
+  {% for name, c in cats.items() %}<tr><td>{{ name }}</td><td>{{ c.pri }}{% if c.pri==1 %} (emergency){% elif c.pri==2 %} (urgent){% elif c.pri==3 %} (scheduled){% else %} (routine){% endif %}</td><td>{{ c.svc[0] }} to {{ c.svc[1] }}</td></tr>{% endfor %}
+  </tbody></table>
+  <p>Levels and service times are design assumptions for this prototype, not clinical guidance.</p>
+
+  <h3>Scheduling policies</h3>
+  <ul>
+    <li><b>FCFS</b> serves the oldest request first.</li>
+    <li><b>Priority</b> serves the most urgent level first, oldest first within a level. Routine requests can wait a long time when urgent ones keep arriving.</li>
+    <li><b>Priority + Aging</b> lifts a waiting request by one level for every <code>aging</code> seconds (default 5) it waits, but never above level {{ aging_floor }}. HELP and urgent requests are therefore never overtaken by aging. Every waiting request is eventually served as long as the urgent levels (1 to 2) do not keep the caregivers busy all the time.</li>
+    <li><b>Preemption</b> lets a more urgent request interrupt a caregiver who is serving a less urgent one. The interrupted request keeps its remaining time and goes back to the queue. In this simulation the interruption is exact, because it happens at the moment the urgent request arrives (within one {{ '%.2f'|format(0.05) }} s tick).</li>
+  </ul>
+
+  <h3>Operating-systems ideas used</h3>
+  <ul>
+    <li><b>Bounded buffer:</b> the queue has a fixed size. When it is full a new request is dropped, except HELP, which pushes out the least urgent waiting request instead.</li>
+    <li><b>Mutual exclusion:</b> one lock protects the queue, caregivers and counters, because the clock thread and the web server threads use them at the same time.</li>
+    <li><b>Interrupt:</b> a HELP request raises an event flag. The dispatcher handles it before normal scheduling, and the screen shows an alert until an operator acknowledges it. This is an application-level event, not a hardware interrupt.</li>
+    <li><b>Starvation and aging:</b> compare Priority and Priority + Aging under heavy load on the Performance page.</li>
+  </ul>
+
+  <h3>Patient model</h3>
+  <p>Each patient has a profile built from their eye-tracking recording: how long a selection takes, how often they correct a mistake, and how often the tracker loses their eyes. A mistaken selection creates a wrong request that the patient retracts and then replaces. How often patients need care, which request they choose and how long caregivers take are model settings. The load levels are an average of {% for k, v in loads.items() %}{{ v|int }} s{% if not loop.last %}, {% endif %}{% endfor %} between needs per patient (light, moderate, heavy, overload).</p>
+
+  <h3>Metrics</h3>
+  <ul>
+    <li><b>Wait</b> is the time from a request arriving in the queue to a caregiver first starting on it. Time spent being served is not included.</li>
+    <li><b>HELP + PAIN wait</b> is the mean wait of those two categories. <b>Routine</b> means level 4.</li>
+    <li><b>Waited &gt; {{ starve|int }} s</b> counts requests that waited longer than that for their first service. It is an indicator of starvation, not proof of it.</li>
+    <li><b>Fairness</b> is Jain's index over the patients' mean waits (1.0 means every patient waits equally).</li>
+    <li><b>Caregiver busy</b> is the share of caregiver time spent serving, including time lost to cancelled requests.</li>
+  </ul>
+</div>
+{% endblock %}
