@@ -654,26 +654,55 @@ def methodology():
     return render_template("methodology.html", page="methodology", cats=CATS, loads=LOADS,
                            aging_floor=AGING_FLOOR, starve=STARVE_AFTER)
 
-
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--experiments", action="store_true", help="run the experiment suite headless and exit")
     ap.add_argument("--seeds", type=int, default=10)
-    ap.add_argument("--port", type=int, default=5000)
+    ap.add_argument("--port", type=int, default=int(os.environ.get("PORT", 5000)))
     a = ap.parse_args()
+
     if a.experiments:
         os.makedirs(os.path.join(BASE, "results"), exist_ok=True)
         t0 = time.time()
         exp_id, cfg, agg, raw = run_experiments(seeds=a.seeds)
-        for name, rows in (("experiment_runs.csv", raw), ("experiment_summary.csv", agg)):
-            with open(os.path.join(BASE, "results", name), "w", newline="", encoding="utf-8") as fh:
+
+        for name, rows in (
+            ("experiment_runs.csv", raw),
+            ("experiment_summary.csv", agg),
+        ):
+            with open(
+                os.path.join(BASE, "results", name),
+                "w",
+                newline="",
+                encoding="utf-8",
+            ) as fh:
                 w = csv.DictWriter(fh, fieldnames=list(rows[0]))
                 w.writeheader()
                 w.writerows(rows)
-        print(f"experiment #{exp_id}: {len(raw)} runs in {time.time() - t0:.1f}s -> results/*.csv and {DB_PATH}")
-        print(f"{'load':9} {'policy':30} {'avg':>7} {'emerg':>7} {'HELP':>6} {'rt.max':>7} {'starved':>7} {'drop':>5} {'preempt':>7} {'fair':>5}")
+
+        print(
+            f"experiment #{exp_id}: {len(raw)} runs in "
+            f"{time.time() - t0:.1f}s -> results/*.csv and {DB_PATH}"
+        )
+
+        print(
+            f"{'load':9} {'policy':30} {'avg':>7} "
+            f"{'emerg':>7} {'HELP':>6} {'rt.max':>7} "
+            f"{'starved':>7} {'drop':>5} {'preempt':>7} {'fair':>5}"
+        )
+
         for r in agg:
-            print(f"{r['load']:9} {r['policy']:30} {r['avg_wait']:7.1f} {r['emerg_wait']:7.1f} {r['help_wait']:6.1f} "
-                  f"{r['routine_max']:7.1f} {r['starved']:7.1f} {r['dropped']:5.1f} {r['preemptions']:7.1f} {r['fairness']:5.2f}")
+            print(
+                f"{r['load']:9} {r['policy']:30} "
+                f"{r['avg_wait']:7.1f} {r['emerg_wait']:7.1f} "
+                f"{r['help_wait']:6.1f} {r['routine_max']:7.1f} "
+                f"{r['starved']:7.1f} {r['dropped']:5.1f} "
+                f"{r['preemptions']:7.1f} {r['fairness']:5.2f}"
+            )
     else:
-        app.run(host="127.0.0.1", port=a.port, debug=False, threaded=True)
+        app.run(
+            host="0.0.0.0",
+            port=a.port,
+            debug=False,
+            threaded=True,
+        )
